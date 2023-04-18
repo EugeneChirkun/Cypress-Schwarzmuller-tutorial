@@ -18,8 +18,10 @@ cy.get('@submitBtn').should('have.attr', 'disabled');
     cy.visit('http://localhost:5173/about');
     cy.get('[data-cy="contact-input-message"]').type('Hi there!');
     cy.get('[data-cy="contact-input-name"]').type('Johnatan Beaver');
+
+    cy.screenshot();
     cy.get('[data-cy="contact-input-email"]').type('email@example.com{enter}');
-    
+    cy.screenshot();
     cy.get('[data-cy="contact-btn-submit"]').as('submitBtn');
     cy.get('@submitBtn').contains('Send Message');
     cy.get('@submitBtn').click();
@@ -54,8 +56,10 @@ cy.get('@submitBtn').should('have.attr', 'disabled');
     cy.get('[data-cy="contact-input-email"]').focus().blur();
     cy.get('[data-cy="contact-input-email"]')
     .parent()
-    .should('have.attr', 'class')
-    .and('match', /invalid/);
+    .should((el) => {
+        expect(el.attr('class')).not.to.be.undefined;
+        expect(el.attr('class')).to.contain('invalid');
+    });
 });
 
 }); 
